@@ -1,17 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./components/App";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { createStore } from "redux";
+import reducers from "./store/reducers";
+import { Provider } from "react-redux";
+import Global from "./styledComponents/Global";
+import middleware from "./store/middleware";
+
+const store = createStore(reducers, middleware);
+const defaultOptions = {
+  // prevent apollo from caching because of wrong data overriding due to backend id duplicate bug
+  watchQuery: {
+    fetchPolicy: "no-cache",
+    errorPolicy: "ignore",
+  },
+  query: {
+    fetchPolicy: "no-cache",
+    errorPolicy: "all",
+  },
+};
+export const apolloClient = new ApolloClient({
+  uri: "http://localhost:4000",
+  cache: new InMemoryCache(),
+  defaultOptions,
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+    <ApolloProvider client={apolloClient}>
+      <Global />
+      <App />
+    </ApolloProvider>
+  </Provider>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
