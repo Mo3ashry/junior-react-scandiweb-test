@@ -17,6 +17,9 @@ export default class Grid extends Component {
         ${() => props.gap && `grid-gap:${props.gap};`}
         ${() => props.alignContent && `align-content:${props.alignContent};`}
         ${() => props.alignItems && `align-items:${props.alignItems};`};
+        ${() => props.justifyItems && `justify-items:${props.justifyItems};`};
+        ${() =>
+          props.justifyContent && `justify-content:${props.justifyContent};`};
         }
       `}
       ${"" /* grid item */}
@@ -36,6 +39,13 @@ export default class Grid extends Component {
       position: relative;
       &:hover {
         box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+        ${
+          "" /* edit for resubmission
+        11.Add To Cart button on PLP should be visible only on hover. <=Done */
+        }
+        .circle-btn {
+          display: block;
+        }
       }
     }
     &.category-item {
@@ -43,7 +53,22 @@ export default class Grid extends Component {
       background-color: #fff;
       width: 100%;
       text-align: center;
+      position: relative;
     }
+    &.out-stock {
+      filter: opacity(0.5);
+    }
+    &.cart-item-control {
+      max-width: 40%;
+      min-width: 30%;
+    }
+    &.full-width {
+      width: 100%;
+    }
+    &.full-height {
+      height: 100%;
+    }
+    
   `;
 
   render() {

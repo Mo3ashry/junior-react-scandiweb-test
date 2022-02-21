@@ -5,20 +5,6 @@ const getAllCategoriesQuery = gql`
   {
     categories {
       name
-      products {
-        id
-        name
-        inStock
-        gallery
-        category
-        prices {
-          currency {
-            label
-            symbol
-          }
-          amount
-        }
-      }
     }
   }
 `;
@@ -34,11 +20,30 @@ const getCategoryQuery = (title) => gql`{
     category(input:{title:"${title}"}){
          name
       products {
+             id
+      name
+      inStock
+      gallery
+      description
+      category
+      brand
+      attributes {
         id
         name
-        inStock
-        gallery
-        category
+        type
+        items {
+          displayValue
+          value
+          id
+        }
+      }
+      prices {
+        currency {
+          label
+          symbol
+        }
+        amount
+      }
         prices {
           currency {
             label

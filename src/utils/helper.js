@@ -1,10 +1,16 @@
+import { isEqual } from "lodash";
+
 export const getCurrentPrice = (product, userCurrency) => {
   return product.prices?.find(
     (price) => price.currency.label === userCurrency.label
   ).amount;
 };
-export const isInCart = (cart, productId) => {
-  return cart.some((item) => item.id === productId);
+export const findInCart = (cart, productId, userAttributes) => {
+  return cart.find(
+    (item) =>
+      item.product.id === productId &&
+      isEqual(item.userAttributes, userAttributes)
+  );
 };
 
 export const setDefaultAttributes = (attributes) => {

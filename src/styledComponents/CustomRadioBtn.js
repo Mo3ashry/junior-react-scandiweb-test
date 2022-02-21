@@ -4,9 +4,13 @@ import styled, { css } from "styled-components";
 class CustomRadioBtn extends Component {
   radioInput = styled.input.attrs({ type: "radio" })`
     visibility: hidden;
+    width: 0;
+    height: 0;
   `;
   styledLabel = styled.label`
+    display: inline-block;
     border: 1px solid #000;
+    color: #1d1f22;
     padding: 0.5em;
     white-space: nowrap;
     ${({ isSelected, displayOnly }) =>

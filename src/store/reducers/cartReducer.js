@@ -2,33 +2,33 @@ import {
   ADD_TO_CART,
   CHANGE_ATTRIBUTE,
   REMOVE_FROM_CART,
-  SET_PRODUCT_AMOUNT,
+  SET_PRODUCT_QUANTITY,
 } from "../actions/cartActions";
 
 export default function cartReducer(state = [], action) {
   switch (action.type) {
     case ADD_TO_CART:
-      return state.concat(action.product);
+      return state.concat(action.data);
     case REMOVE_FROM_CART:
-      return state.filter((product) => product.id !== action.id);
+      return state.filter((item) => item.id !== action.id);
     case CHANGE_ATTRIBUTE:
-      return state.map((product) => {
-        if (product.id === action.productId) {
+      return state.map((item) => {
+        if (item.product.id === action.productId) {
           return {
-            ...product,
+            ...item,
             userAttributes: {
-              ...product.userAttributes,
+              ...item.userAttributes,
               [action.attrName]: action.attrValue,
             },
           };
-        } else return product;
+        } else return item;
       });
-    case SET_PRODUCT_AMOUNT:
-      return state.map((product) => {
-        if (product.id === action.productId) {
-          return { ...product, quantity: action.quantity };
+    case SET_PRODUCT_QUANTITY:
+      return state.map((item) => {
+        if (item.id === action.id) {
+          return { ...item, quantity: action.quantity };
         }
-        return product;
+        return item;
       });
     default:
       return state;

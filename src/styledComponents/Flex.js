@@ -17,11 +17,20 @@ export default class Flex extends Component {
       ${() =>
         props.justifyContent && `justify-content: ${props.justifyContent};`}
     `}
-      
-      &.cart-item {
+      &.miniCart-box {
+      height: 60vh;
+    }
+    &.cart-item {
       border-top: 1px solid #000;
       max-width: 80vw;
-      padding-top: 10px;
+      padding: 10px 0;
+    }
+    &.cart-flex {
+      max-width: 60%;
+      text-align: left;
+    }
+    &.full-width {
+      width: 100%;
     }
     & > .nav-cart {
       overflow: auto;

@@ -7,7 +7,7 @@ export default class MenuContainer extends Component {
     top: 10px;
     right: 1rem;
     background-color: #fff;
-    color: #000;
+    color: #1d1f22;
     z-index: 3;
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
     & > ul {
@@ -19,6 +19,16 @@ export default class MenuContainer extends Component {
       & > li {
         margin-bottom: 0.5rem;
         cursor: pointer;
+        font-weight: 500;
+        opacity: 0.5;
+
+        ${
+          "" /* edit for resubmission
+        2.Currency Switcher items don't highlight on hover. <=Solved*/
+        }
+        &.selected, &:hover {
+          opacity: 1;
+        }
       }
     }
   `;

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Container from "../styledComponents/Container";
 import Flex from "../styledComponents/Flex";
+import { UppercaseHeader } from "../styledComponents/General.styled";
 import Grid from "../styledComponents/Grid";
 import CartItem from "./CartItem";
 
@@ -12,7 +13,7 @@ export class Cart extends Component {
   };
 
   renderHeader = () => {
-    return <h1 style={{ textTransform: "uppercase" }}>cart</h1>;
+    return <UppercaseHeader>cart</UppercaseHeader>;
   };
   renderTotalPrice = () => {
     return null;
@@ -34,14 +35,14 @@ export class Cart extends Component {
         {cart.length > 0 ? (
           <Flex
             direction="column"
-            style={this.props.miniCart && { height: "60vh" }}
+            className={this.props.miniCart ? "miniCart-box" : "cart-box"}
           >
             {this.renderHeader()}
             <div className={this.props.miniCart && "nav-cart"}>
-              {cart?.map((product) => (
+              {cart?.map((item) => (
                 <CartItem
-                  item={product}
-                  key={product.id}
+                  item={item}
+                  key={item.id}
                   loading={this.state.loading}
                   handleViewBag={this.props.handleViewBag}
                 />

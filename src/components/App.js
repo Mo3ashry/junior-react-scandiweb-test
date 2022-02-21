@@ -6,14 +6,14 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import { storeCategories } from "../store/actions/categoriesActions";
+import { storeCategoriesNames } from "../store/actions/categoriesActions";
 import Cart from "./Cart";
 import Category from "./Category";
 import Nav from "./Nav";
 import Product from "./Product";
 import BallsLoader from "../styledComponents/BallsLoader";
-import DisplayError from "../styledComponents/DisplayError";
 import NotFound from "./NotFound";
+import { DisplayError } from "../styledComponents/General.styled";
 
 class App extends Component {
   constructor(props) {
@@ -23,10 +23,12 @@ class App extends Component {
       error: null,
     };
   }
+
   componentDidMount() {
     setTimeout(
       () =>
-        storeCategories(this.props.dispatch).then(
+        //store categories names for displaying in navBar dynamically
+        storeCategoriesNames(this.props.dispatch).then(
           (res) => res?.message && this.setState({ error: res.message })
         ),
       2000

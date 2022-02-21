@@ -1,95 +1,101 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setProductAmount } from "../store/actions/cartActions";
+import {
+  removeFromCart,
+  setProductQuantity,
+} from "../store/actions/cartActions";
 import Button from "../styledComponents/Button";
 import Carousel from "../styledComponents/Carousel";
 import Grid from "../styledComponents/Grid";
 import Flex from "../styledComponents/Flex";
-// import { getProductById } from "../utils/fetchApi";
 import StructureLoader from "../styledComponents/StructureLoader";
-import SubTitle from "../styledComponents/SubTitle";
-import { Link } from "react-router-dom";
 import { getCurrentPrice } from "../utils/helper";
 import CustomRadioBtn from "../styledComponents/CustomRadioBtn";
+import deleteIcon from "../utils/icons/delete.svg";
+import {
+  ProductHeader,
+  SubTitle,
+  ProductLink,
+} from "../styledComponents/General.styled";
 
 class CartItem extends Component {
   render() {
-    const { quantity, userAttributes, product, dispatch, userCurrency } =
+    const { quantity, userAttributes, product, dispatch, userCurrency, id } =
       this.props;
     return !this.props.loading ? (
-      <Flex className="cart-item">
-        <Flex direction="column" style={{ maxWidth: "60%" }}>
-          <Grid item>
-            <Link
-              to={`/product/${product.id}`}
+      <Flex alignItems="flex-start" className="cart-item">
+        <Flex direction="column" className="cart-flex">
+          <div>
+            <ProductLink
+              to={{
+                pathname: `/product/${product.id}`,
+                state: { product },
+              }}
               onClick={() =>
                 this.props.handleViewBag && this.props.handleViewBag()
               }
             >
-              <h2 style={{ marginBottom: "0" }}> {product.brand}</h2>
-              <SubTitle style={{ marginTop: "2px" }}> {product.name}</SubTitle>
-            </Link>
-          </Grid>
-          <Grid item>
+              <ProductHeader>
+                <h2 className="brand"> {product.brand}</h2>
+                <SubTitle className="product-name"> {product.name}</SubTitle>
+              </ProductHeader>
+            </ProductLink>
+            {/* edit for resubmission
+            3.It should be possible to remove a product from the Cart Overlay. <= Done*/}
+            <Button noBorder small onClick={() => dispatch(removeFromCart(id))}>
+              <img src={deleteIcon} alt="Delete" className="icon" />
+            </Button>
+          </div>
+          <div>
             <h3>
               {userCurrency.symbol}
               {getCurrentPrice(product, userCurrency)}
             </h3>
-          </Grid>
+          </div>
+          {/* edit for resubmission
+            12.Attributes are overlapping on the Cart page.<=Done */}
           {product.attributes.map((attribute) => (
-            <Grid
-              item
-              key={product.id + attribute.id}
-              parent
-              gap="5px"
-              direction="col"
-            >
-              {attribute.items.map((item) => (
-                <Grid item key={product.id + item.id}>
-                  <CustomRadioBtn
-                    type={attribute.type}
-                    item={item}
-                    name={attribute.name}
-                    id={product.id + attribute.id + item.id}
-                    displayOnly
-                    isSelected={Boolean(
-                      userAttributes[attribute.name] === item.value
-                    )}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <div key={product.id + attribute.id}>
+              {/*edit for resubmission
+               8.Attributes like "yes" and "no" are meaningless without a label.
+              Please implement the label for attributes in the cart. <=Done*/}
+              <SubTitle>{attribute.name}</SubTitle>
+              <Grid parent gap="5px" direction="col">
+                {attribute.items.map((item) => (
+                  <Grid item key={product.id + item.id}>
+                    <CustomRadioBtn
+                      type={attribute.type}
+                      item={item}
+                      name={attribute.name}
+                      id={product.id + attribute.id + item.id}
+                      displayOnly
+                      isSelected={Boolean(
+                        userAttributes[attribute.name] === item.value
+                      )}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
           ))}
         </Flex>
-        <Grid
-          parent
-          direction="col"
-          style={{ maxWidth: "40%", minWidth: "30%" }}
-        >
-          <Grid
-            item
-            parent
-            direction="row"
-            cols="4"
-            style={{ justifyItems: "center" }}
-          >
+        <Grid parent direction="col" className="cart-item-control">
+          <Grid item parent direction="row" cols="4" justifyItems="center">
             <Grid item rows="3">
               <Button
-                onClick={() =>
-                  dispatch(setProductAmount(product.id, quantity + 1))
-                }
+                onClick={() => dispatch(setProductQuantity(id, quantity + 1))}
               >
                 +
               </Button>
             </Grid>
             <Grid item rows="6">
-              {quantity}
+              <SubTitle>{quantity}</SubTitle>
             </Grid>
             <Grid item rows="3">
               <Button
                 onClick={() => {
                   if (quantity > 1)
-                    dispatch(setProductAmount(product.id, quantity - 1));
+                    dispatch(setProductQuantity(id, quantity - 1));
                 }}
               >
                 -
@@ -112,7 +118,7 @@ class CartItem extends Component {
   }
 }
 function mapStateToProps({ userCurrency }, props) {
-  const { userAttributes, quantity, ...product } = props.item;
-  return { userCurrency, userAttributes, quantity, product };
+  const { userAttributes, quantity, product, id } = props.item;
+  return { userCurrency, userAttributes, quantity, product, id };
 }
 export default connect(mapStateToProps)(CartItem);

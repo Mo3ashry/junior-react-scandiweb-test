@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MenuContainer from "../styledComponents/MenuContainer";
+import {connect} from "react-redux"
 
 class CurrenciesMenu extends Component {
   render() {
@@ -10,9 +11,10 @@ class CurrenciesMenu extends Component {
             <li
               key={currency.label}
               onClick={() => this.props.setUserCurrency(currency)}
+              className={this.props.userCurrency.label===currency.label?"selected":"option"}
             >
-              {" "}
-              {currency.symbol} {currency.label}
+              
+              {`${currency.symbol} ${currency.label}`}
             </li>
           ))}
         </ul>
@@ -21,4 +23,8 @@ class CurrenciesMenu extends Component {
   }
 }
 
-export default CurrenciesMenu;
+function mapStateToProps({userCurrency}){
+  return{userCurrency}
+}
+
+export default connect(mapStateToProps) (CurrenciesMenu);

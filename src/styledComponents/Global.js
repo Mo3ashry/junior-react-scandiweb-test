@@ -12,8 +12,8 @@ html {
 body {
   margin: 0;
   font-family: 'Raleway';
+    color:#1D1F22;
 }
-
 /**
  * Render the "main" element consistently in IE.
  */

@@ -26,7 +26,7 @@ class Button extends Component {
       ${() => props.noBorder && `border:none;`}
       ${() => props.small && `padding:.3em;`}
       ${() => props.primary && `background-color: #5ece7b;color: #fff;`}
-      ${() => props.secondary && `background-color: #000;color: #fff;`}
+      ${() => props.secondary && `background-color: #1D1F22;color: #fff;`}
       ${() => props.warning && `background-color: #ff3939;color: #fff;`}
       ${() => props.disabled && `background-color: #c1c1c1;`}
     `};
@@ -37,6 +37,7 @@ class Button extends Component {
       filter: brightness(1.1);
     }
     &.circle-btn {
+      display: none;
       position: absolute;
       height: 50px;
       width: 50px;
@@ -47,6 +48,15 @@ class Button extends Component {
       z-index: 1;
       border: none;
       box-shadow: rgb(145, 145, 145) 1px 3px 5px;
+      & > .cart-icon {
+        width: 1.5rem;
+      }
+    }
+    & > .currency-toggle-icon {
+      padding-left: 0.5rem;
+    }
+    & > .icon {
+      width: 1rem;
     }
   `;
   render() {

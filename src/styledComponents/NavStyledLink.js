@@ -13,7 +13,7 @@ export default class NavStyledLink extends Component {
       color: #000;
       ${(props) =>
         props.active === "true" &&
-        `color:#5ECE7B;}
+        `color:#5ECE7B;
     &:after{
       content:"";
       display:block;
@@ -23,7 +23,8 @@ export default class NavStyledLink extends Component {
       width:100%;
       border-bottom:2px solid #5ECE7B;
     }
-    `};
+    `}
+    }
   `;
   render() {
     return (

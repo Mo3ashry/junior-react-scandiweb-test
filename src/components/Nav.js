@@ -2,10 +2,8 @@ import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { changeCurrency } from "../store/actions/currencyAction";
-import Badge from "../styledComponents/Badge";
 import Button from "../styledComponents/Button";
 import Container from "../styledComponents/Container";
-import RelativeDiv from "../styledComponents/RelativeDiv";
 import Grid from "../styledComponents/Grid";
 import NavStyledLink from "../styledComponents/NavStyledLink";
 import { getCurrencies } from "../utils/fetchApi";
@@ -15,8 +13,12 @@ import openedMenuIcon from "../utils/icons/openedToggle.svg";
 import closedMenuIcon from "../utils/icons/closedToggle.svg";
 import MiniCart from "./MiniCart";
 import CurrenciesMenu from "./CurrenciesMenu";
-import CoverScreen from "../styledComponents/CoverScreen";
-import CartMenu from "../styledComponents/CartMenu";
+import {
+  Badge,
+  CartMenu,
+  CoverScreen,
+  RelativeDiv,
+} from "../styledComponents/General.styled";
 
 class Nav extends Component {
   // constructor
@@ -75,17 +77,17 @@ class Nav extends Component {
     return (
       <Container>
         <Grid parent direction="col">
-          <Grid item cols={5} style={{ height: "100%" }}>
-            {categories.map((category) => (
+          <Grid item cols={5} className="full-height">
+            {categories.map((categoryName) => (
               <NavStyledLink
-                key={category.name}
-                active={activeLink === category.name ? "true" : "false"}
+                key={categoryName}
+                active={activeLink === categoryName ? "true" : "false"}
               >
                 <Link
-                  to={`/category/${category.name}`}
-                  onClick={() => this.setState({ activeLink: category.name })}
+                  to={`/category/${categoryName}`}
+                  onClick={() => this.setState({ activeLink: categoryName })}
                 >
-                  {category.name}
+                  {categoryName}
                 </Link>
               </NavStyledLink>
             ))}
@@ -94,7 +96,7 @@ class Nav extends Component {
             <img src={bagLogo} alt="logo" />
           </Grid>
           <Grid item cols={5} align="end">
-            <RelativeDiv divRef={this.currencyListRef}>
+            <RelativeDiv ref={this.currencyListRef}>
               <Button
                 noBorder
                 small
@@ -105,7 +107,7 @@ class Nav extends Component {
                 <img
                   src={openCurrencyList ? openedMenuIcon : closedMenuIcon}
                   alt="toggle"
-                  style={{ paddingLeft: ".5rem" }}
+                  className="currency-toggle-icon"
                 />
               </Button>
               {openCurrencyList && (
@@ -115,14 +117,25 @@ class Nav extends Component {
                 />
               )}
             </RelativeDiv>
-            <RelativeDiv divRef={this.cartListRef}>
+            <RelativeDiv ref={this.cartListRef}>
               <Button
                 noBorder
                 small
                 onClick={() => this.toggleMenuState("openCart")}
               >
                 <img src={cartImg} alt="empty cart" />
-                {cart.length > 0 && <Badge>{cart.length}</Badge>}
+
+                {/* edit for resubmission
+                4.The cart item total quantity badge on the cart icon should
+                display the total cart item quantity, not the cart item count. <=Done */}
+                {cart.length > 0 && (
+                  <Badge>
+                    {cart.reduce(
+                      (quantity, item) => quantity + item.quantity,
+                      0
+                    )}
+                  </Badge>
+                )}
               </Button>
               {openCart && (
                 <CartMenu>

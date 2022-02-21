@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../styledComponents/Button";
 import Flex from "../styledComponents/Flex";
+import { CapitalizeSmHeader } from "../styledComponents/General.styled";
 import Grid from "../styledComponents/Grid";
 import { getCurrentPrice } from "../utils/helper";
 import { Cart } from "./Cart";
@@ -10,14 +11,14 @@ import { Cart } from "./Cart";
 export class MiniCart extends Cart {
   renderHeader = () => {
     return (
-      <h2 style={{ textTransform: "capitalize" }}>
+      <CapitalizeSmHeader>
         My Bag: {this.props.cart?.length}items
-      </h2>
+      </CapitalizeSmHeader>
     );
   };
   renderTotalPrice = () => (
-    <Flex style={{ width: "100%" }}>
-      <h2 style={{ textTransform: "capitalize" }}>Total :</h2>{" "}
+    <Flex className="full-width">
+      <CapitalizeSmHeader>Total :</CapitalizeSmHeader>
       <h2>{`${this.props.userCurrency.symbol} ${this.props.totalAmount.toFixed(
         2
       )}`}</h2>
@@ -25,7 +26,7 @@ export class MiniCart extends Cart {
   );
 
   renderLinks = () => (
-    <Grid parent gap="5px" direction="col" style={{ width: "100%" }}>
+    <Grid parent gap="5px" direction="col" className="full-width">
       <Grid item cols="6">
         <Link to="/cart">
           <Button
@@ -48,9 +49,9 @@ export class MiniCart extends Cart {
 
 function mapStateToProps({ cart, userCurrency }, { handleViewBag }) {
   // calculate total price for the cart
-  const totalAmount = cart.reduce((totalAmount, product) => {
+  const totalAmount = cart.reduce((totalAmount, item) => {
     return (
-      totalAmount + getCurrentPrice(product, userCurrency) * product.quantity
+      totalAmount + getCurrentPrice(item.product, userCurrency) * item.quantity
     );
   }, 0);
   const miniCart = true;

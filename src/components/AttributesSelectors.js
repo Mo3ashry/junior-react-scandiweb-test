@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { changeUserAttrs } from "../store/actions/cartActions";
 import CustomRadioBtn from "../styledComponents/CustomRadioBtn";
+import {
+  AttrsContainer,
+  ProductHeader,
+  SubTitle,
+} from "../styledComponents/General.styled";
 import Grid from "../styledComponents/Grid";
-import SubTitle from "../styledComponents/SubTitle";
-import { getCurrentPrice, isInCart } from "../utils/helper";
+import { getCurrentPrice } from "../utils/helper";
 
 export class AttributesSelectors extends Component {
   handleUserAttributes = (attrName, attrValue) => {
-    const { cart, product, dispatch, setAttributes } = this.props;
+    const { setAttributes } = this.props;
     setAttributes(attrName, attrValue);
-    isInCart(cart, product.id) &&
-      dispatch(changeUserAttrs(product.id, attrName, attrValue));
   };
   renderAttrLabels = (label) => {
     return <SubTitle>{label}:</SubTitle>;
@@ -20,15 +21,12 @@ export class AttributesSelectors extends Component {
     const { product, userAttributes, userCurrency } = this.props;
     return (
       <div>
-        <div className="product-header" style={{ marginBottom: "2rem" }}>
-          <h2 style={{ marginBottom: "0" }}> {product.brand}</h2>
-          <SubTitle style={{ marginTop: "2px" }}> {product.name}</SubTitle>
-        </div>
+        <ProductHeader>
+          <h2 className="brand"> {product.brand}</h2>
+          <SubTitle className="product-name"> {product.name}</SubTitle>
+        </ProductHeader>
         {product.attributes.map((attribute) => (
-          <div
-            key={product.id + attribute.id}
-            style={{ maxWidth: "min-content", marginBottom: "10px" }}
-          >
+          <AttrsContainer key={product.id + attribute.id}>
             {this.renderAttrLabels(attribute.name)}
             <Grid
               parent
@@ -54,7 +52,7 @@ export class AttributesSelectors extends Component {
                 </Grid>
               ))}
             </Grid>
-          </div>
+          </AttrsContainer>
         ))}
         <div>
           {this.renderAttrLabels("Price")}
